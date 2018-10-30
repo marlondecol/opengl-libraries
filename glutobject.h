@@ -40,9 +40,17 @@ int obRemove(Object *object, int id);
 
 int obCoordLength(Object *object);
 
+Point* obGetCoordPoint(Coord *coord);
+
+Point* obGetFirstPoint(Object *object);
+
+Coord* obGetNextCoord(Coord *coord);
+
 Point* obGetPoint(Object *object, int id);
 
-int obCrash(Object *object1, Object *object2);
+Object* obRefresh(Object *object, double x, double y);
+
+bool obCrash(Object *object1, Object *object2);
 
 
 

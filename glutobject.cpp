@@ -3,6 +3,7 @@
  */
 
 // Inclui as bibliotecas necessárias.
+#include <stdio.h>
 #include <stdlib.h>
 
 // Inclui a FreeGLUT.
@@ -151,6 +152,43 @@ int obCoordLength(Object *object) {
 
 
 /**
+ * Obtém um ponto informando diretamente um ponteiro para uma coordenada.
+ */
+
+Point* obGetCoordPoint(Coord *coord) {
+	if (coord == NULL)
+		return NULL;
+
+	return coord->point;
+}
+
+
+
+Point* obGetFirstPoint(Object *object) {
+	if (object == NULL)
+		return NULL;
+
+	Coord *coord = *object;
+
+	return coord->point;
+}
+
+
+
+/**
+ * Obtém a próxima coordenada de uma informada.
+ */
+
+Coord* obGetNextCoord(Coord *coord) {
+	if (coord == NULL)
+		return NULL;
+
+	return coord->next;
+}
+
+
+
+/**
  * Obtém uma coordenadas do objeto informando o atributo "id" do elemento.
  */
 
@@ -172,9 +210,66 @@ Point* obGetPoint(Object *object, int id) {
 
 
 /**
- * Verifica se dois objetos estão colidindo um no outro.
+ * Atualiza as coordenadas de um objeto, dados seus deslocamentos.
  */
 
-int obCrash(Object *object1, Object *object2) {
+Object* obRefresh(Object *object, double x, double y) {
+	if (object == NULL)
+		return NULL;
 
+	Coord *coord = *object;
+
+	while (coord != NULL) {
+		ptSet(coord->point, ptGetX(coord->point) + x, ptGetY(coord->point) + y);
+		coord = coord->next;
+	}
+
+	return object;
+}
+
+
+
+/**
+ * Verifica se dois retângulos drSquad() estão colidindo um no outro.
+ */
+
+bool obCrash(Object *object1, Object *object2) {
+	// Verifica se os objetos existem.
+	if (object1 == NULL || object2 == NULL)
+		return false;
+
+	// Cria um ponteiro para a primeira coordenada
+	// registrada de cada objeto, onde, no caso
+	// dos quadrados desenhados pela função drSquad(),
+	// é o canto inferior esquerdo.
+	Coord *coord1 = *object1;
+	Coord *coord2 = *object2;
+
+	// Instancia uma variável para cada coordenada dos pontos
+	// inferior esquerdo e superior direito de cada objeto.
+	double ax1, ax2, bx1, bx2;
+	double ay1, ay2, by1, by2;
+
+	// Define as coordenadas nas variáveis correspondentes
+	// ao ponto inferior esquerdo de cada objeto.
+	ptGet(obGetCoordPoint(coord1), &ax1, &ay1);
+	ptGet(obGetCoordPoint(coord2), &bx1, &by1);
+
+	// Define as coordenadas dos dois ponteiros como sendo
+	// o canto superior direito de cada objeto.
+	coord1 = obGetNextCoord(obGetNextCoord(coord1));
+	coord2 = obGetNextCoord(obGetNextCoord(coord2));
+
+	// Define as coordenadas nas variáveis correspondentes
+	// ao ponto superior direito de cada objeto.
+	ptGet(obGetCoordPoint(coord1), &ax2, &ay2);
+	ptGet(obGetCoordPoint(coord2), &bx2, &by2);
+
+	// Verifica se os objetos não estão sobrepostos.
+	// Partindo disto, retorna o contrário, ou seja,
+	// se estão sobrespostos, o retorno será verdadeiro.
+	// Torna-se mais fácil a implementação desta forma,
+	// visto que deveriam ser feitas mais operações lógicas
+	// para verificar se está havendo sobreposição.
+	return !((ax1 >= bx2 || ax2 <= bx1) || (ay1 >= by2 || ay2 <= by1));
 }

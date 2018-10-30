@@ -35,10 +35,14 @@ Palette* plGetDefaultPalette() {
 		{0.5f, 0.0f, 1.0f}, // #7f00ff
 		{0.25f, 0.0f, 0.5f}, // #3f007f
 		{0.816f, 0.668f, 0.0f}, // #d1ab00
-		{0.7f, 0.7f, 0.7f}, // #b3b3b3
+		{0.25f, 0.25f, 0.25f}, // #3f3f3f
 		{0.46f, 0.6f, 0.61f}, // #779a9c
 		{1.0f, 0.94f, 0.84f}, // #ffefd9
-		{1.0f, 0.5f, 0.0f} // #ff7f00
+		{1.0f, 0.5f, 0.0f}, // #ff7f00
+		{0.75f, 0.0f, 0.0f}, // #bf0000
+		{0.45f, 0.75f, 0.0f}, // #72bf00
+		{0.5f, 0.5f, 0.5f}, // #7f7f7f
+		{0.125f, 0.125f, 0.125f} // #1f1f1f
 	};
 
 	// Nomes relativos às cores listadas acima.
@@ -57,7 +61,11 @@ Palette* plGetDefaultPalette() {
 		"Cinza",
 		"Cinza azulado",
 		"Areia",
-		"Laranja"
+		"Laranja",
+		"Escarlate",
+		"Verde grama",
+		"Cinza claro",
+		"Cinza escuro"
 	};
 
 	int paletteSize = sizeof(glPalette) / sizeof(glPalette[0]);

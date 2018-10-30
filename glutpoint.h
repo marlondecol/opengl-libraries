@@ -31,7 +31,15 @@ double ptGetY(Point *point);
 
 void ptSet(Point *point, double x, double y);
 
+void ptSetX(Point *point, double x);
+
+void ptSetY(Point *point, double y);
+
 double ptDistance(Point *pointA, Point *pointB);
+
+void ptPrint(Point *point);
+
+void ptPrint(Point *point, int precision);
 
 
 

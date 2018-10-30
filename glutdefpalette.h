@@ -35,6 +35,10 @@
 #define _BLUEGRAY 12
 #define _SKIN 13
 #define _ORANGE 14
+#define _BLOOD 15
+#define _GRASS 16
+#define _LIGHTGRAY 17
+#define _DARKGRAY 18
 
 
 
