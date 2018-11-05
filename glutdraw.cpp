@@ -4,6 +4,8 @@
 
 // Inclui as bibliotecas necessárias.
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
 
 // Inclui a FreeGLUT.
 #include <GL/glut.h>
@@ -540,9 +542,11 @@ Object* drCircle(int color, double x, double y, double ray, int resolution) {
 
 /**
  * Renderiza um texto na tela.
+ * A fonte padrão, caso não seja informada,
+ * é GLUT_BITMAP_HELVETICA_18
  */
 
-Object* drText(int color, Point *point, char *str) {
+Object* drText(int color, Point *point, char *str, void *font) {
 	// Busca a cor na paleta.
 	Color *cl = plGetColor(drPalette, color);
 
@@ -555,15 +559,15 @@ Object* drText(int color, Point *point, char *str) {
 	// Instancia um novo objeto para este desenho.
 	Object *text = obCreate();
 
-	// Define a posição do texto.
-	glRasterPos2f(ptGetX(point), ptGetY(point));
-
     // Adiciona a coordenada no objeto.
     obAdd(text, point);
 
+    // Define a posição do texto.
+	glRasterPos2f(ptGetX(point), ptGetY(point));
+
 	// Insere o texto na tela, caractere a caractere.
 	while (*str)
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *str++);
+		glutBitmapCharacter(font, *str++);
 
 	// Finaliza a matriz de coordenadas.
 	glPopMatrix();
@@ -572,9 +576,60 @@ Object* drText(int color, Point *point, char *str) {
     return text;
 }
 
-Object* drText(int color, double x, double y, char *str) {
+Object* drText(int color, double x, double y, char *str, void *font) {
 	// Instancia um novo ponto.
 	Point *point = ptCreate(x, y);
 
-	return drText(color, point, str);
+	return drText(color, point, str, font);
+}
+
+Object* drText(int color, Point *point, char *str, void *font, bool rightJustify) {
+	// Possui o tamanho da cadeia de caracteres.
+    // Esta variável só será usada se o texto for alinhado a direita.
+    double sum = 0;
+
+    // Caso deve alinhar a direita
+    if (rightJustify) {
+    	// Cria uma nova cadeia de caracteres a partir do tamanho da original.
+	    char *_str = (char*) malloc(strlen(str));
+
+	    // Copia a string original para a criada acima.
+	    strcpy(_str, str);
+
+	    // Desconta a largura do primeiro caractere.
+	    sum -= (double) glutBitmapWidth(font, *_str++);
+
+	    // Calcula a largura do resto do texto.
+	    while (*_str)
+	    	sum += (double) glutBitmapWidth(font, *_str++);
+	}
+
+	// Altera o valor de X da coordenada
+	// considerando o deslocamento para a esquerda.
+	ptSetX(point, ptGetX(point) - sum);
+
+	return drText(color, point, str, font);
+}
+
+Object* drText(int color, double x, double y, char *str, void *font, bool rightJustify) {
+	// Instancia um novo ponto.
+	Point *point = ptCreate(x, y);
+
+	return drText(color, point, str, font, rightJustify);
+}
+
+Object* drText(int color, Point *point, char *str) {
+	return drText(color, point, str, GLUT_BITMAP_HELVETICA_18);
+}
+
+Object* drText(int color, double x, double y, char *str) {
+	return drText(color, x, y, str, GLUT_BITMAP_HELVETICA_18);
+}
+
+Object* drText(int color, Point *point, char *str, bool rightJustify) {
+	return drText(color, point, str, GLUT_BITMAP_HELVETICA_18, rightJustify);
+}
+
+Object* drText(int color, double x, double y, char *str, bool rightJustify) {
+	return drText(color, x, y, str, GLUT_BITMAP_HELVETICA_18, rightJustify);
 }

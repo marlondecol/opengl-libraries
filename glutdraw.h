@@ -61,8 +61,14 @@ Object* drPoly(int color, double coordinates[], int coordLength);
 Object* drCircle(int color, Point *point, double ray, int resolution);
 Object* drCircle(int color, double x, double y, double ray, int resolution);
 
+Object* drText(int color, Point *point, char *str, void *font);
+Object* drText(int color, double x, double y, char *str, void *font);
+Object* drText(int color, Point *point, char *str, void *font, bool rightJustify);
+Object* drText(int color, double x, double y, char *str, void *font, bool rightJustify);
 Object* drText(int color, Point *point, char *str);
 Object* drText(int color, double x, double y, char *str);
+Object* drText(int color, Point *point, char *str, bool rightJustify);
+Object* drText(int color, double x, double y, char *str, bool rightJustify);
 
 
 
